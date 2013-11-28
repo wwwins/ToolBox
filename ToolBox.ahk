@@ -29,6 +29,7 @@
 global WWW = "http://flash.isobar.com.tw/hk/project/"
 global SWF_PATH = "d:\Data\project\bin\"
 global SVN_PATH = "d:\Data\project\svn\flash\"
+global SLEEP_TIME = 500
 
 #z::
 IfWinExist Adobe Flash CS5
@@ -62,7 +63,7 @@ IfWinExist Adobe Flash CS5
 		; waiting for Exporting SWF Movie
 		WinWait, Exporting SWF Movie
 		WinWaitClose, Exporting SWF Movie
-		Sleep 1000
+		Sleep %SLEEP_TIME% 
 		Send ^{w}
 		Send ^{w}
 		; run FlashDevelop
@@ -82,7 +83,7 @@ IfWinExist Adobe Flash CS5
 		WinActivate
 		;WinWaitClose, Adobe Flash Player 11
 		FileCopy %SWF_PATH%fb.swf, %SVN_PATH%fb.swf, 1
-		Sleep 1000
+		Sleep %SLEEP_TIME%
 		Send ^{q}
 		MsgBox done - FB Preview
 	}
@@ -103,7 +104,7 @@ CompileSWF()
 	;WinWait, ahk_class Afx:00400000:b:00010005:00000006:3C521445
 	WinWait, Exporting SWF Movie
 	WinWaitClose, Exporting SWF Movie
-	Sleep 1000
+	Sleep %SLEEP_TIME%
 	; close
 	Send ^{w}
 	Send ^{w}
@@ -124,9 +125,9 @@ SyncSWF()
 Run, iexplore.exe
 WinWait Home - APAC Comms Portal - Windows Internet Explorer
 Send ^+{DEL}
-Sleep 500
+Sleep %SLEEP_TIME%
 Send D
-Sleep 500
+Sleep %SLEEP_TIME%
 Send ^{o}
 SetKeyDelay, 0
 Send %www%{ENTER}
