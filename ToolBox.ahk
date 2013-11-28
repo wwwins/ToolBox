@@ -26,15 +26,16 @@
 ; =============================================================================
 
 ; Setting variables
-global WWW = "http://flash.isobar.com.tw/hk/project/"
-global SWF_PATH = "d:\Data\project\bin\"
-global SVN_PATH = "d:\Data\project\svn\flash\"
+global WWW        = "http://flash.isobar.com.tw/hk/project/"
+global ROOT_PATH  = "d:\Data\project\"
+global SWF_PATH   = "d:\Data\project\bin\"
+global SVN_PATH   = "d:\Data\project\svn\flash\"
 global SLEEP_TIME = 500
 
 #z::
 IfWinExist Adobe Flash CS5
 {
-	InputBox myChoice, , 1) Main Flow  2) FB Preview
+	InputBox myChoice, ToolBox, 1) Main Flow  2) FB Preview
 	if ErrorLevel
 	{
 		MsgBox, What is your choice?
@@ -44,7 +45,7 @@ IfWinExist Adobe Flash CS5
 	if myChoice = 1
 	{
 		; Displays a standard dialog that allows the user to open files
-		FileSelectFile, SelectedFile, 3
+		FileSelectFile, SelectedFile, 3, %ROOT_PATH%lib
 		if SelectedFile =
 		{
 			MsgBox, Do you select a fla file?!
