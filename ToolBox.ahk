@@ -10,15 +10,19 @@
 ;  -src
 ; =============================================================================
 ; Running Flash IDE(you don't need to open the fla document).
+; in lazy mode
 ; win + z
 ; 1) main flow
 ; 2) fb preview
 ;
 ; Auto deploy the application for testing on a server.
-; win + x
+; win + o
 ;
 ; Testing in IE
-; win + o
+; win + x
+;
+; sync only new files
+; win + n
 ; =============================================================================
 
 ; Setting variables
@@ -116,7 +120,7 @@ SyncSWF()
 }
 
 ; Testing in IE
-#o::
+#x::
 Run, iexplore.exe
 WinWait Home - APAC Comms Portal - Windows Internet Explorer
 Send ^+{DEL}
@@ -129,7 +133,41 @@ Send %www%{ENTER}
 return
 
 ; SVN auto commit
-#x::
+#o::
 Run, "d:\Data\project\AutoCommit.bat"
+return
+
+; Copy only the source files that are newer than their counterparts
+#n::
+SetBatchLines, -1
+FileList =
+; FileSelectFolder, WhichFolder
+; Loop, %WhichFolder%\*.*, , 1
+; 0: Subfolders are not recursed into
+Loop, %SWF_PATH%\*.swf, , 0
+{
+  copy_it = n
+  IfNotExist, %SVN_PATH%\%A_LoopFileName%
+    copy_it = y
+  Else
+  {
+    FileGetTime, time, %SVN_PATH%\%A_LoopFileName%
+    ;EnvSub, time, %A_LoopFileTimeModified%, seconds
+    time -= %A_LoopFileTimeModified%, seconds
+    if time < 0
+      copy_it = y
+  }
+  if copy_it = y
+  {
+    FileCopy, %A_LoopFileFullPath%, %SVN_PATH%\%A_LoopFileName%, 1
+    FileList = %FileList%%A_LoopFileName%`n
+    if ErrorLevel
+      MsgBox, Could not copy "%A_LoopFileFullPath%" to "%SVN_PATH%\%A_LoopFileName%".
+  }
+}
+if FileList =
+  MsgBox, sync all files.
+else
+  MsgBox, copy %FileList%
 return
 
