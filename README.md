@@ -12,3 +12,5 @@ My lazy toolbox.
 
 * win + o
 
+* win + n
+
